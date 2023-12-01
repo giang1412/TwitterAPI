@@ -8,5 +8,9 @@ app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
 app.use(express.json())
-app.use('/user', usersRouter)
 databaseService.connect()
+
+app.use('/user', usersRouter)
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+    res.status(400).json({ error: err.message })
+})
