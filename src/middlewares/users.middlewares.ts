@@ -1,8 +1,8 @@
-import { error } from 'console'
-import { Request, Response, NextFunction } from 'express'
 import { checkSchema } from 'express-validator'
 import { USERS_MESSAGES } from '~/constants/messages'
+import databaseService from '~/services/database.services'
 import usersService from '~/services/users.services'
+import { hashPassword } from '~/utils/crypto'
 import { validate } from '~/utils/validation'
 export const loginValidator = validate(
     checkSchema({
@@ -11,11 +11,15 @@ export const loginValidator = validate(
             isEmail: { errorMessage: USERS_MESSAGES.EMAIL_IS_INVALID },
             trim: true,
             custom: {
-                options: async (value) => {
-                    const isEmailExist = await usersService.checkEmailExist(value)
-                    if (isEmailExist) {
-                        throw new Error(USERS_MESSAGES.EMAIL_IS_INVALID)
+                options: async (value, { req }) => {
+                    const user = await databaseService.users.findOne({
+                        email: value,
+                        password: hashPassword(req.body.password)
+                    })
+                    if (!user) {
+                        throw new Error(USERS_MESSAGES.EMAIL_OR_PASSWORD_IS_INCORRECT)
                     }
+                    req.user = user
                     return true
                 }
             }
@@ -29,17 +33,17 @@ export const loginValidator = validate(
                     max: 50
                 },
                 errorMessage: USERS_MESSAGES.PASSWORD_LENGTH_MUST_BE_FROM_6_TO_50
-            },
-            isStrongPassword: {
-                options: {
-                    minLength: 6,
-                    minLowercase: 1,
-                    minUppercase: 1,
-                    minNumbers: 1,
-                    minSymbols: 1
-                },
-                errorMessage: USERS_MESSAGES.PASSWORD_MUST_BE_STRONG
             }
+            // isStrongPassword: {
+            //     options: {
+            //         minLength: 6,
+            //         minLowercase: 1,
+            //         minUppercase: 1,
+            //         minNumbers: 1,
+            //         minSymbols: 1
+            //     },
+            //     errorMessage: USERS_MESSAGES.PASSWORD_MUST_BE_STRONG
+            // }
         }
     })
 )
