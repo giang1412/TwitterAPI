@@ -4,14 +4,16 @@ import {
     loginController,
     logoutController,
     registerController,
-    resendVerifyEmailController
+    resendVerifyEmailController,
+    forgotPasswordController
 } from '~/controllers/users.controller'
 import {
     accessTokenValidator,
     verifyEmailTokenValidator,
     loginValidator,
     refreshTokenValidator,
-    registerValidator
+    registerValidator,
+    forgotPasswordValidator
 } from '~/middlewares/users.middlewares'
 import { wrapRequestHandler } from '~/utils/handlers'
 const usersRouter = Router()
@@ -53,4 +55,12 @@ usersRouter.post('/verify-email', verifyEmailTokenValidator, wrapRequestHandler(
 // */
 usersRouter.post('/resend-verify-email', accessTokenValidator, wrapRequestHandler(resendVerifyEmailController))
 
+// //**
+// * Description. Resend verify email when user client click on the link in email
+// * Path: /resend-verify-email
+// * Method: POST
+// * Header: { Authorization: Bearer <access_token> }
+// * Body: {}
+// */
+usersRouter.post('/forgot-password', forgotPasswordValidator, wrapRequestHandler(forgotPasswordController))
 export default usersRouter
