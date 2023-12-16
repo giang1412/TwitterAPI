@@ -10,7 +10,8 @@ import {
     resetPasswordController,
     getMeController,
     updateMeController,
-    getProfileController
+    getProfileController,
+    followController
 } from '~/controllers/users.controller'
 import { filterMiddleware } from '~/middlewares/common.middlewares'
 import {
@@ -137,4 +138,12 @@ usersRouter.patch(
 // */
 usersRouter.get('/:username', wrapRequestHandler(getProfileController))
 
+// //**
+// * Description. Follow someone
+// * Path: /follow
+// * Method: POST
+// * Header: { Authorization: Bearer <access_token> }
+// * Body: {followed_user_id: string}
+// */
+usersRouter.post('/follow', accessTokenValidator, verifiedUserValidator, wrapRequestHandler(followController))
 export default usersRouter
