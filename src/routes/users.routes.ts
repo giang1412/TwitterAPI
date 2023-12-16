@@ -9,7 +9,8 @@ import {
     verifyForgotPasswordController,
     resetPasswordController,
     getMeController,
-    updateMeController
+    updateMeController,
+    getProfileController
 } from '~/controllers/users.controller'
 import { filterMiddleware } from '~/middlewares/common.middlewares'
 import {
@@ -128,4 +129,12 @@ usersRouter.patch(
     ]),
     wrapRequestHandler(updateMeController)
 )
+
+// //**
+// * Description. Get profile user
+// * Path: /:username
+// * Method: GET
+// */
+usersRouter.get('/:username', wrapRequestHandler(getProfileController))
+
 export default usersRouter
