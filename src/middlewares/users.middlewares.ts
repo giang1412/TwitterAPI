@@ -13,6 +13,7 @@ import { ObjectId } from 'mongodb'
 import { ErrorWithStatus } from '~/models/Error'
 import { TokenPayload } from '~/models/requests/User.requests'
 import { UserVerifyStatus } from '~/constants/enums'
+import { REGEX_USERNAME } from '~/constants/regex'
 
 const passwordSchema: ParamSchema = {
     notEmpty: {
@@ -496,12 +497,18 @@ export const updateMeValidator = validate(
                 },
                 trim: true,
 
-                isLength: {
-                    options: {
-                        min: 1,
-                        max: 50
-                    },
-                    errorMessage: USERS_MESSAGES.USERNAME_LENGTH
+                custom: {
+                    options: async (value: string, { req }) => {
+                        if (!REGEX_USERNAME.test(value)) {
+                            throw Error(USERS_MESSAGES.USERNAME_INVALID)
+                        }
+                        const user = await databaseService.users.findOne({ username: value })
+                        // Nếu đã tồn tại username này trong db
+                        // thì chúng ta không cho phép update
+                        if (user) {
+                            throw Error(USERS_MESSAGES.USERNAME_EXISTED)
+                        }
+                    }
                 }
             },
             avatar: imageSchema,
