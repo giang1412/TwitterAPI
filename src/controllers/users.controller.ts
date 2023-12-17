@@ -6,6 +6,7 @@ import { UserVerifyStatus } from '~/constants/enums'
 import HTTP_STATUS from '~/constants/httpStatus'
 import { USERS_MESSAGES } from '~/constants/messages'
 import {
+    FollowerReqBody,
     ForgotPasswordReqBody,
     GetProfileReqParams,
     LoginReqBody,
@@ -13,6 +14,7 @@ import {
     RegisterReqBody,
     ResetPasswordReqBody,
     TokenPayload,
+    UnfollowerReqParams,
     UpdateMeReqBody,
     VerifyEmailReqBody,
     VerifyForgotPasswordReqBody
@@ -154,9 +156,20 @@ export const getProfileController = async (req: Request<GetProfileReqParams>, re
     })
 }
 
-export const followController = async (req: Request, res: Response, next: NextFunction) => {
+export const followController = async (
+    req: Request<ParamsDictionary, any, FollowerReqBody>,
+    res: Response,
+    next: NextFunction
+) => {
     const { user_id } = req.decoded_authorization as TokenPayload
     const { followed_user_id } = req.body
     const result = await usersService.follow(user_id, followed_user_id)
+    return res.json(result)
+}
+
+export const unfollowController = async (req: Request<UnfollowerReqParams>, res: Response, next: NextFunction) => {
+    const { user_id } = req.decoded_authorization as TokenPayload
+    const { user_id: followed_user_id } = req.params
+    const result = await usersService.unfollow(user_id, followed_user_id)
     return res.json(result)
 }
