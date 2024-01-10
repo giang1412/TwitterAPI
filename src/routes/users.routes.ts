@@ -14,7 +14,8 @@ import {
     followController,
     unfollowController,
     changePasswordController,
-    oauthController
+    oauthController,
+    refreshTokenController
 } from '~/controllers/users.controller'
 import { filterMiddleware } from '~/middlewares/common.middlewares'
 import {
@@ -37,6 +38,14 @@ const usersRouter = Router()
 
 usersRouter.post('/login', loginValidator, wrapRequestHandler(loginController))
 
+/**
+ * Description: Refresh token
+ * path /refresh-token
+ * Method: POST
+ * Body: {refresh_token: string}
+ */
+
+usersRouter.post('/refresh-token', refreshTokenValidator, wrapRequestHandler(refreshTokenController))
 /**
  * Description Register a new user
  * path /register
