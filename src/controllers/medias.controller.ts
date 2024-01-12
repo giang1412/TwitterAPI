@@ -29,6 +29,15 @@ export const uploadVideoController = async (req: Request, res: Response, next: N
         result: url
     })
 }
+
+export const uploadVideoHLSController = async (req: Request, res: Response, next: NextFunction) => {
+    const url = await mediasService.uploadVideoHLS(req)
+    return res.json({
+        message: USERS_MESSAGES.UPLOAD_SUCCESS,
+        result: url
+    })
+}
+
 export const serveVideoStreamController = async (req: Request, res: Response, next: NextFunction) => {
     const range = req.headers.range
     if (!range) {
