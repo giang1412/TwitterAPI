@@ -7,6 +7,7 @@ import { initFolder } from './utils/file'
 import { config } from 'dotenv'
 import { UPLOAD_IMAGE_DIR, UPLOAD_VIDEO_DIR } from './constants/dir'
 import staticRouter from './routes/static.routes'
+import cors from 'cors'
 config()
 databaseService.connect()
 const app = express()
@@ -15,6 +16,7 @@ const port = process.env.PORT || 4000
 initFolder()
 
 app.use(express.json())
+app.use(cors())
 app.use('/users', usersRouter)
 app.use('/medias', mediasRouter)
 app.use('/static', staticRouter)
