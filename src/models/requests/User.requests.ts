@@ -23,7 +23,9 @@ export interface LogoutReqBody {
 export interface TokenPayload extends JwtPayload {
     user_id: string
     token_type: TokenType
-    //verify: UserVerifyStatus
+    verify: UserVerifyStatus
+    exp: number
+    iat: number
 }
 
 export interface VerifyEmailReqBody {
