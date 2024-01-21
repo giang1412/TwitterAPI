@@ -11,7 +11,7 @@ import cors from 'cors'
 config()
 
 databaseService.connect().then(() => {
-    databaseService.indexUser()
+    databaseService.indexUsers()
     databaseService.indexRefreshTokens()
     databaseService.indexVideoStatus()
     databaseService.indexFollowers()
