@@ -5,6 +5,7 @@ import RefreshToken from '~/models/schemas/RefreshToken.schema'
 import Follower from '~/models/schemas/Follower.schema'
 import VideoStatus from '~/models/schemas/VideoStatus.schema'
 import Tweet from '~/models/schemas/Tweet.schema'
+import Hashtag from '~/models/schemas/HashTag.schema'
 config()
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@twitter-dev.wxgvvxz.mongodb.net/?retryWrites=true&w=majority`
 
@@ -75,7 +76,7 @@ class DataService {
     }
 
     get users(): Collection<User> {
-        return this.db.collection(process.env.DB_USER_COLLECTION as string)
+        return this.db.collection(process.env.DB_USERS_COLLECTION as string)
     }
 
     get refreshTokens(): Collection<RefreshToken> {
@@ -91,7 +92,11 @@ class DataService {
     }
 
     get tweets(): Collection<Tweet> {
-        return this.db.collection(process.env.DB_TWEET_COLLECTION as string)
+        return this.db.collection(process.env.DB_TWEETS_COLLECTION as string)
+    }
+
+    get hashtags(): Collection<Hashtag> {
+        return this.db.collection(process.env.DB_HASHTAGS_COLLECTION as string)
     }
 }
 
