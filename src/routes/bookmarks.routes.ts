@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { bookmarkTweetController, unbookmarkTweetController } from '~/controllers/bookmarks.controller'
 import { createTweetController } from '~/controllers/tweets.controller'
-import { createTweetValidator } from '~/middlewares/tweets.middlewares'
+import { createTweetValidator, tweetIdValidator } from '~/middlewares/tweets.middlewares'
 import { accessTokenValidator, verifiedUserValidator } from '~/middlewares/users.middlewares'
 import { wrapRequestHandler } from '~/utils/handlers'
 
@@ -13,7 +13,13 @@ const bookmarksRouter = Router()
  * Body: TweetRequestBody
  * Header: {Authorization: Bearer <access_token>}
  */
-bookmarksRouter.post('', accessTokenValidator, verifiedUserValidator, wrapRequestHandler(bookmarkTweetController))
+bookmarksRouter.post(
+    '',
+    accessTokenValidator,
+    verifiedUserValidator,
+    tweetIdValidator,
+    wrapRequestHandler(bookmarkTweetController)
+)
 
 /**
  * Description: Create tweets
@@ -26,6 +32,7 @@ bookmarksRouter.delete(
     '/tweets/:tweet_id',
     accessTokenValidator,
     verifiedUserValidator,
+    tweetIdValidator,
     wrapRequestHandler(unbookmarkTweetController)
 )
 
