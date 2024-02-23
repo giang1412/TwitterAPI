@@ -231,9 +231,6 @@ export const tweetIdValidator = validate(
                                                     }
                                                 }
                                             }
-                                        },
-                                        view: {
-                                            $add: ['$user_views', '$guest_views']
                                         }
                                     }
                                 }
