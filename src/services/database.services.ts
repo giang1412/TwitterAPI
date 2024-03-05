@@ -76,6 +76,12 @@ class DataService {
             this.followers.createIndex({ user_id: 1, followed_user_id: 1 })
         }
     }
+    async indexTweets() {
+        const exists = await this.tweets.indexExists(['content_text'])
+        if (!exists) {
+            this.tweets.createIndex({ content: 'text' }, { default_language: 'none' })
+        }
+    }
 
     get users(): Collection<User> {
         return this.db.collection(process.env.DB_USERS_COLLECTION as string)
