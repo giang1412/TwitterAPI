@@ -12,7 +12,7 @@ import { ErrorWithStatus } from '~/models/Error'
 import HTTP_STATUS from '~/constants/httpStatus'
 import Follower from '~/models/schemas/Follower.schema'
 import axios from 'axios'
-import { sendVerifyEmail } from '~/utils/email'
+import { sendForgotPasswordEmail, sendVerifyEmail, sendVerifyRegisterEmail } from '~/utils/email'
 config()
 class UsersService {
     private signAccessToken({ user_id, verify }: { user_id: string; verify: UserVerifyStatus }) {
@@ -296,10 +296,10 @@ class UsersService {
         }
     }
 
-    async resendEmailVerify(user_id: string) {
+    async resendEmailVerify(user_id: string, email: string) {
         // Giả sử thay thế phương thức gửi mail bằng console.log
         const email_verify_token = await this.signEmailVerifyToken({ user_id, verify: UserVerifyStatus.Unverified })
-        console.log('Resend verify email: ', email_verify_token)
+        await sendVerifyRegisterEmail(email, email_verify_token)
 
         await databaseService.users.updateOne(
             { _id: new ObjectId(user_id) },
@@ -317,7 +317,7 @@ class UsersService {
         }
     }
 
-    async forgotPassword({ user_id, verify }: { user_id: string; verify: UserVerifyStatus }) {
+    async forgotPassword({ user_id, verify, email }: { user_id: string; email: string; verify: UserVerifyStatus }) {
         const forgot_password_token = await this.signForgotPasswordToken({ user_id, verify })
         await databaseService.users.updateOne(
             { _id: new ObjectId(user_id) },
@@ -331,8 +331,7 @@ class UsersService {
             }
         )
 
-        // Giả sử thay thế phương thức gửi mail bằng console.log
-        console.log('Forgot password token: ', forgot_password_token)
+        await sendForgotPasswordEmail(email, forgot_password_token)
 
         return {
             message: USERS_MESSAGES.CHECK_EMAIL_TO_RESET_PASSWORD
