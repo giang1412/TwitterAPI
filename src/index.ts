@@ -7,7 +7,7 @@ import { initFolder } from './utils/file'
 import { config } from 'dotenv'
 import { UPLOAD_VIDEO_DIR } from './constants/dir'
 import staticRouter from './routes/static.routes'
-import cors from 'cors'
+import cors, { CorsOptions } from 'cors'
 import tweetsRouter from './routes/tweets.routes'
 import bookmarksRouter from './routes/bookmarks.routes'
 import likesRouter from './routes/likes.routes'
@@ -17,7 +17,8 @@ import conversationsRouter from './routes/conversations.routes'
 import initSocket from './utils/socket'
 import swaggerJsDoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
-import { envConfig } from './constants/config'
+import { envConfig, isProduction } from './constants/config'
+import helmet from 'helmet'
 // import '~/utils/fake'
 config()
 
@@ -45,9 +46,12 @@ const httpServer = createServer(app)
 const port = envConfig.port
 
 initFolder()
-
+app.use(helmet())
+const corsOptions: CorsOptions = {
+    origin: isProduction ? envConfig.clientUrl : '*'
+}
+app.use(cors(corsOptions))
 app.use(express.json())
-app.use(cors())
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification))
 app.use('/users', usersRouter)
 app.use('/medias', mediasRouter)
