@@ -22,6 +22,7 @@
         "@types/mime": "^3.0.4",
         "@types/minimist": "^1.2.5",
         "@types/node": "^20.8.10",
+        "@types/swagger-jsdoc": "^6.0.4",
         "@typescript-eslint/eslint-plugin": "^6.9.1",
         "@typescript-eslint/parser": "^6.9.1",
         "eslint": "^8.53.0",
@@ -42,6 +43,7 @@
         "@img/sharp-win32-x64": "^0.33.1",
         "@types/jsonwebtoken": "^9.0.5",
         "@types/lodash": "^4.14.202",
+        "@types/swagger-ui-express": "^4.1.6",
         "axios": "^1.6.2",
         "cors": "^2.8.5",
         "dotenv": "^16.3.1",
@@ -56,6 +58,8 @@
         "sharp": "^0.33.1",
         "slash": "^5.1.0",
         "socket.io": "^4.7.4",
+        "swagger-jsdoc": "^6.2.8",
+        "swagger-ui-express": "^5.0.0",
         "zx": "^7.2.3"
     },
     "optionalDependencies": {

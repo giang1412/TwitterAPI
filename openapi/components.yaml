@@ -1,0 +1,281 @@
+components:
+    schemas:
+        RegisterBody:
+            type: object
+            properties:
+                name:
+                    type: string
+                    example: gianghongoc
+                email:
+                    type: string
+                    example: timongmo1412@gmail.com
+                password:
+                    type: string
+                    example: Giang123!
+                confirm_password:
+                    type: string
+                    example: Giang123!
+                date_of_birth:
+                    type: string
+                    format: ISO8601
+                    example: 2023-06-08T10:17:31.096Z
+        LoginBody:
+            type: object
+            properties:
+                email:
+                    type: string
+                    example: timongmo1412@gmail.com
+                password:
+                    type: string
+                    example: Giang123!
+        SuccessAuthentication:
+            type: object
+            properties:
+                access_token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjRiZTBhZDJlNDNkMjQ2NDM5NGZlZWRiIiwidG9rZW5fdHlwZSI6MCwidmVyaWZ5IjoxLCJpYXQiOjE2OTEzODMyMjYsImV4cCI6MTY5MTQ2OTYyNn0.HTLX20cB7_z0c9c8FDg3MIx6RJEELHHlmJNZa94ku-o
+                refresh_token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjRiZTBhZDJlNDNkMjQ2NDM5NGZlZWRiIiwidG9rZW5fdHlwZSI6MSwidmVyaWZ5IjoxLCJpYXQiOjE2OTEzODMyMjYsImV4cCI6MTcwMDAyMzIyNn0.bFnaBfxWl-Q48HCwAeMpNzZwTO9LEjcBd7Zyipjqr64
+        User:
+            type: object
+            properties:
+                _id:
+                    type: string
+                    format: MongoId
+                    example: 64be0ad2e43d2464394feedb
+                name:
+                    type: string
+                    example: John Doe
+                email:
+                    type: string
+                    example: johndoe@example.com
+                date_of_birth:
+                    type: string
+                    format: ISO8601
+                    example: 2023-06-08T10:17:31.096Z
+                created_at:
+                    type: string
+                    format: ISO8601
+                    example: 2023-03-08T12:00:00Z
+                updated_at:
+                    type: string
+                    format: ISO8601
+                    example: 2023-03-08T12:00:00Z
+                verify:
+                    $ref: '#/components/schemas/UserVerifyStatus'
+                twitter_circle:
+                    type: array
+                    items:
+                        type: string
+                        format: MongoId
+                    example: ['64be0ad2e43d2464394feedb', '64be0ad2e43d2464394feedc']
+                bio:
+                    type: string
+                    example: 'This is my bio.'
+                location:
+                    type: string
+                    example: 'San Francisco, CA'
+                website:
+                    type: string
+                    example: 'www.example.com'
+                username:
+                    type: string
+                    example: 'johndoe'
+                avatar:
+                    type: string
+                    example: 'http:localhost:4000/images/avatars/johndoe.jpg'
+                cover_photo:
+                    type: string
+                    example: 'http:localhost:4000/images/avatars/johndoe.jpg'
+        UserVerifyStatus:
+            type: number
+            enum: [Unverified, Verified, Banned]
+            example: 1
+        RefreshTokenBody:
+            type: object
+            properties:
+                refresh_token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjRiZTBhZDJlNDNkMjQ2NDM5NGZlZWRiIiwidG9rZW5fdHlwZSI6MSwidmVyaWZ5IjoxLCJpYXQiOjE2OTEzODMyMjYsImV4cCI6MTcwMDAyMzIyNn0.bFnaBfxWl-Q48HCwAeMpNzZwTO9LEjcBd7Zyipjqr64
+        UpdateMeReqBody:
+            type: object
+            properties:
+                name:
+                    type: string
+                    example: John Doe
+                date_of_birth:
+                    type: string
+                    format: ISO8601
+                    example: 2023-06-08T10:17:31.096Z
+                bio:
+                    type: string
+                    example: 'This is my bio.'
+                location:
+                    type: string
+                    example: 'San Francisco, CA'
+                website:
+                    type: string
+                    example: 'www.example.com'
+                username:
+                    type: string
+                    example: 'johndoe'
+                avatar:
+                    type: string
+                    example: 'http:localhost:4000/images/avatars/johndoe.jpg'
+                cover_photo:
+                    type: string
+                    example: 'http:localhost:4000/images/avatars/johndoe.jpg'
+        GetProfileUser:
+            type: object
+            properties:
+                _id:
+                    type: MongoId
+                    example: 657de818b014995e7856eacb
+                name:
+                    type: string
+                    example: Giang
+                email:
+                    type: string
+                    example: johndoe@example.com
+                date_of_birth:
+                    type: string
+                    format: ISO8601
+                    example: 2023-06-08T10:17:31.096Z
+                bio:
+                    type: string
+                    example: 'This is my bio.'
+                location:
+                    type: string
+                    example: 'San Francisco, CA'
+                website:
+                    type: string
+                    example: 'www.example.com'
+                username:
+                    type: string
+                    example: 'johndoe'
+                avatar:
+                    type: string
+                    example: 'http:localhost:4000/images/avatars/johndoe.jpg'
+                cover_photo:
+                    type: string
+                    example: 'http:localhost:4000/images/avatars/johndoe.jpg'
+
+        TweetReqBody:
+            type: object
+            properties:
+                type:
+                    $ref: '#/components/schemas/TweetType'
+                audience:
+                    $ref: '#/components/schemas/TweetAudience'
+                content:
+                    type: string
+                    description: Nội dung của tweet
+                parent_id:
+                    oneOf:
+                        - type: null
+                        - type: string
+                hashtags:
+                    type: array
+                    items:
+                        type: string
+                    description: Danh sách các hashtag
+                mentions:
+                    type: array
+                    items:
+                        type: string
+                    description: Danh sách các user_id được mention
+                medias:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/MediaTypes'
+        TweetType:
+            type: number
+            enum: [Tweet, Retweet, Comment, QuoteTweet]
+            description: Loại tweet
+
+        TweetAudience:
+            type: number
+            enum: [Everyone, TwitterCircle]
+            description: Đối tượng của tweet
+        MediaTypes:
+            type: number
+            enum: [Image, Video, HLS]
+
+        Tweet:
+            type: object
+            properties:
+                _id:
+                    type: string
+                    description: ID của tweet
+                user_id:
+                    type: string
+                    description: ID của người dùng tạo tweet
+                type:
+                    type: number
+                    description: Loại của tweet
+                audience:
+                    type: number
+                    description: Đối tượng của tweet
+                content:
+                    type: string
+                    description: Nội dung của tweet
+                parent_id:
+                    type: string
+                    description: ID của tweet cha (nếu có)
+                hashtags:
+                    type: array
+                    items:
+                        type: string
+                    description: Danh sách các hashtag
+                mentions:
+                    type: array
+                    items:
+                        type: string
+                    description: Danh sách các user_id được mention
+                medias:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/MediaTypes'
+                    description: Danh sách các media đính kèm
+                guest_views:
+                    type: number
+                    description: Số lần xem của khách
+                user_views:
+                    type: number
+                    description: Số lần xem của người dùng
+                created_at:
+                    type: string
+                    format: ISO8601
+                    description: Thời gian tạo tweet
+                updated_at:
+                    type: string
+                    format: ISO8601
+                    description: Thời gian cập nhật tweet
+        TweetParam:
+            type: object
+            properties:
+                tweet_id:
+                    type: string
+                    example: 65d701872e9ffc88bd43fe02
+        BookmarkAndLike:
+            type: object
+            properties:
+                _id:
+                    type: string
+                    example: 66043bab29f1d9f30da52b8c
+                tweet_id:
+                    type: string
+                    example: 65d701872e9ffc88bd43fe02
+                user_id:
+                    type: string
+                    example: 65e88407e5f0b97e785a9779
+                created_at:
+                    type: string
+                    format: ISO8601
+                    example: 2024-03-27T15:30:51.444Z
+    securitySchemes:
+        BearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT

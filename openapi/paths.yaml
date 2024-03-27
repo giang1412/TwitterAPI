@@ -1,0 +1,907 @@
+openapi: 3.0.3
+info:
+    title: Swagger- OpenAPI 3.0
+    description: |-
+        This is a sample Twitter Server based on the OpenAPI 3.0 specification.  You can find out more about
+        Swagger at [https://swagger.io](https://swagger.io). In the third iteration of the pet store, we've switched to the design first approach!
+        You can now help us improve the API whether it's by making changes to the definition itself or to the code.
+        That way, with time, we can improve the API in general, and expose some of the new features in OAS3.
+        _If you're looking for the Swagger 2.0/OAS 2.0 version of Twitter, then click [here](https://editor.swagger.io/?url=https://petstore.swagger.io/v2/swagger.yaml). Alternatively, you can load via the `Edit > Load Petstore OAS 2.0` menu option!_
+        Some useful links:
+        - [The Pet Store repository](https://github.com/swagger-api/swagger-petstore)
+        - [The source API definition for the Pet Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)
+    termsOfService: http://swagger.io/terms/
+    contact:
+        email: apiteam@swagger.io
+    license:
+        name: Apache 2.0
+        url: http://www.apache.org/licenses/LICENSE-2.0.html
+    version: 1.0.11
+externalDocs:
+    description: Find out more about Swagger
+    url: http://swagger.io
+servers:
+    - url: http://localhost:4000
+tags:
+    - name: users
+      description: Các API liên quan đến người dùng Twitter
+paths:
+    /users/login:
+        post:
+            tags:
+                - users
+            summary: Đăng nhập
+            description: Đăng nhập vào hệ thống X clone
+            operationId: login
+            requestBody:
+                description: Thông tin đăng nhập
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/LoginBody'
+                required: true
+            responses:
+                '200':
+                    description: Đăng nhập thành công
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: Login success
+                                    result:
+                                        $ref: '#/components/schemas/SuccessAuthentication'
+                '422':
+                    description: Invalid input
+    /users/register:
+        post:
+            tags:
+                - users
+            summary: Đăng ký
+            description: Đăng ký tài khoản X clone
+            operationId: register
+            requestBody:
+                description: Thông tin đăng ký
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RegisterBody'
+                required: true
+            responses:
+                '200':
+                    description: Đăng ký thành công
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: Register success
+                                    result:
+                                        $ref: '#/components/schemas/SuccessAuthentication'
+                '422':
+                    description: Invalid input
+    /users/refresh-token:
+        post:
+            tags:
+                - users
+            summary: Refresh token
+            description: Refresh_token
+            operationId: Refresh_token
+            requestBody:
+                description: Refresh_token
+                content:
+                    application/json:
+                        example:
+                            refresh_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjVlOTg2N2ZhZTk1NzY1OTBlNWNjN2M3IiwidG9rZW5fdHlwZSI6MSwidmVyaWZ5IjoxLCJleHAiOjE3MjAxNjUxNDUsImlhdCI6MTcxMTUyNjU2N30.v9SPHJziOzkd7rU4AmgaSJp7c6bq6Dt-N8K2BDHt7bw'
+
+                required: true
+            responses:
+                '200':
+                    description: Refresh token success
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: Refresh token success
+                                    result:
+                                        $ref: '#/components/schemas/SuccessAuthentication'
+                '422':
+                    description: Invalid input
+
+    /users/logout:
+        post:
+            tags:
+                - users
+            summary: Đăng xuất tài khoản
+            description: Đăng xuất khỏi hệ thống X clone
+            operationId: logout
+            security:
+                - BearerAuth: []
+            requestBody:
+                description: Đăng xuất tài khoản
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RefreshTokenBody'
+                required: true
+            responses:
+                '200':
+                    description: Logout success
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: Logout success
+
+                '401':
+                    description: Invalid signature
+    /users/forgot-password:
+        post:
+            tags:
+                - users
+            summary: Quên mật khẩu
+            description: Quên mật khẩu
+            operationId: forgot-password
+            requestBody:
+                description: Điền email tài khoản
+                content:
+                    application/json:
+                        example:
+                            email: giaq1412@gmail.com
+                required: true
+            responses:
+                '200':
+                    description: Forgot Password
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: Check email to reset password
+
+                '422':
+                    description: Invalid input
+    /users/reset-password:
+        post:
+            tags:
+                - users
+            summary: Reset password
+            description: Đổi mật khẩu
+            operationId: reset-password
+            requestBody:
+                description: Reset password
+                content:
+                    application/json:
+                        example:
+                            forgot_password_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjVlOTg2N2ZhZTk1NzY1OTBlNWNjN2M3IiwidG9rZW5fdHlwZSI6MiwidmVyaWZ5IjoxLCJpYXQiOjE3MTE0NzI4NjksImV4cCI6MTcxMjA3NzY2OX0.vyH5pFPuIMiucCZgIxk2gsUCcM4iCs4MsHBpFTKQqTc'
+                            password: Giang456!
+                            confirm_password: Giang456!
+                required: true
+            responses:
+                '200':
+                    description: Reset Password
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: Reset password success
+
+                '422':
+                    description: Invalid input
+    /users/me:
+        get:
+            tags:
+                - users
+            summary: Lấy thông tin user
+            description: Lấy thông tin user
+            operationId: getMe
+            security:
+                - BearerAuth: []
+            responses:
+                default:
+                    description: Lấy thông tin user thành công
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/User'
+        patch:
+            tags:
+                - users
+            summary: Cập nhật thông tin user
+            description: Cập nhật thông tin user
+            operationId: updateMe
+            security:
+                - BearerAuth: []
+            requestBody:
+                description: Cập nhật thông tin user
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateMeReqBody'
+            responses:
+                default:
+                    description: Lấy thông tin user thành công
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/User'
+    /users/{username}:
+        get:
+            tags:
+                - users
+            summary: Lấy thông tin user khác
+            description: Lấy thông tin user khác
+            operationId: get Profile
+            parameters:
+                - name: username
+                  in: path
+                  example: user657de818b014995e7856eacb
+                  description: ID of the user
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                default:
+                    description: Lấy thông tin user thành công
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetProfileUser'
+
+    /users/follow:
+        post:
+            tags:
+                - users
+            summary: Theo dõi
+            description: Follow someone
+            operationId: follow
+            security:
+                - BearerAuth: []
+
+            requestBody:
+                description: Follow someone
+                content:
+                    application/json:
+                        example:
+                            followed_user_id: 65797f7725e79dafe0ec83de
+                required: true
+            responses:
+                '200':
+                    description: Follow success
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: Follow success
+
+                '422':
+                    description: Invalid input
+                '404':
+                    description: User not found
+    /users/follow/{user_id}:
+        delete:
+            tags:
+                - users
+            summary: Bỏ theo dõi
+            description: Unfollow someone
+            operationId: Unfollow
+            security:
+                - BearerAuth: []
+
+            parameters:
+                - name: user_id
+                  in: path
+                  example: 65797f7725e79dafe0ec83de
+                  description: unfollow by user_id
+                  required: true
+                  schema:
+                      type: string
+
+            responses:
+                '200':
+                    description: Unfollow success
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: Unfollow success
+
+                '404':
+                    description: Invalid user id
+    /users/change-password:
+        put:
+            tags:
+                - users
+            summary: Thay đổi mật khẩu
+            description: Change password
+            operationId: Change password
+            security:
+                - BearerAuth: []
+            requestBody:
+                description: Change password
+                content:
+                    application/json:
+                        example:
+                            old_password: Giang123!
+                            password: Giang456!
+                            confirm_password: Giang456!
+                required: true
+
+            responses:
+                '200':
+                    description: Change password success
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: Change password success
+
+                '401':
+                    description: Old password not match
+                '422':
+                    description: Invalid input
+
+    /medias/upload-image:
+        post:
+            tags:
+                - medias
+            summary: Uploads hình ảnh
+            description: Uploads image
+            operationId: uploads image
+            security:
+                - BearerAuth: []
+
+            requestBody:
+                description: image
+                content:
+                    multipart/form-data:
+                        schema:
+                            type: object
+                            properties:
+                                image:
+                                    type: string
+                                    format: binary
+                required: true
+            responses:
+                '200':
+                    description: Upload success
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: Upload success
+                                    result:
+                                        type: array
+                                        items:
+                                            type: object
+                                            example:
+                                                url: https://twitter-api-ap-southeast-1.s3.ap-southeast-1.amazonaws.com/images/033d2636fa116aeb45f071300.jpg
+                                                type: 0
+                                        properties:
+                                            url:
+                                                type: string
+                                            type:
+                                                type: integer
+
+                '500':
+                    description: File is empty
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: File is empty
+                                    errorInfo:
+                                        type: object
+                                        properties:
+                                            message:
+                                                type: string
+                                        example: File is empty
+                '401':
+                    description: Access token is required
+
+    /medias/upload-video:
+        post:
+            tags:
+                - medias
+            summary: Uploads video
+            description: Uploads video
+            operationId: uploads video
+            security:
+                - BearerAuth: []
+
+            requestBody:
+                description: video
+                content:
+                    multipart/form-data:
+                        schema:
+                            type: object
+                            properties:
+                                video:
+                                    type: string
+                                    format: binary
+                required: true
+            responses:
+                '200':
+                    description: Uploads success
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: Upload success
+                                    result:
+                                        type: array
+                                        items:
+                                            type: object
+                                            example:
+                                                url: https://twitter-api-ap-southeast-1.s3.ap-southeast-1.amazonaws.com/videos/MGIhssyt0oA8I861CfQHv.mp4
+                                                type: 1
+                                        properties:
+                                            url:
+                                                type: string
+                                            type:
+                                                type: integer
+
+                '500':
+                    description: File is empty
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: File is empty
+                                    errorInfo:
+                                        type: object
+                                        properties:
+                                            message:
+                                                type: string
+                                        example: File is empty
+                '401':
+                    description: Access token is required
+
+    /medias/upload-video-hls:
+        post:
+            tags:
+                - medias
+            summary: Uploads video
+            description: Uploads video
+            operationId: uploads video
+            security:
+                - BearerAuth: []
+
+            requestBody:
+                description: video
+                content:
+                    multipart/form-data:
+                        schema:
+                            type: object
+                            properties:
+                                video:
+                                    type: string
+                                    format: binary
+                required: true
+            responses:
+                '200':
+                    description: Uploads success
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: Upload success
+                                    result:
+                                        type: array
+                                        items:
+                                            type: object
+                                            example:
+                                                url: http://localhost:4000/static/video-hls/TwImObEYFEbHPEEiV5Hwt/master.m3u8
+                                                type: 2
+                                        properties:
+                                            url:
+                                                type: string
+                                            type:
+                                                type: integer
+
+                '500':
+                    description: File is empty
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: File is empty
+                                    errorInfo:
+                                        type: object
+                                        properties:
+                                            message:
+                                                type: string
+                                        example: File is empty
+                '401':
+                    description: Access token is required
+    /tweets:
+        post:
+            tags:
+                - tweets
+            summary: Tạo Tweet
+            description: Create Tweet
+            operationId: Create Tweet
+            security:
+                - BearerAuth: []
+            requestBody:
+                description: Tweet request
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/TweetReqBody'
+                        example:
+                            type: 0
+                            audience: 0
+                            content: Toi la Ho Ngoc Giang
+                            parent_id: null
+                            hashtags: ['CNTT', 'IT']
+                            mentions: []
+                            medias: []
+
+                required: true
+            responses:
+                '200':
+                    description: Uploads success
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        description: Create Tweet Successfully
+                                    result:
+                                        $ref: '#/components/schemas/Tweet'
+                            example:
+                                message: Create Tweet Successfully
+                                result:
+                                    _id: '6603e295b201bb6aaa08ec2d'
+                                    user_id: '65e88407e5f0b97e785a9779'
+                                    type: 2
+                                    audience: 0
+                                    content: ''
+                                    parent_id: '65d8c82055921fdd10246508'
+                                    hashtags:
+                                        - '65dae679030a74767aebbee3'
+                                    mentions: []
+                                    medias: []
+                                    guest_views: 0
+                                    user_views: 0
+                                    created_at: '2024-03-27T09:10:45.212Z'
+                                    updated_at: '2024-03-27T09:10:45.212Z'
+
+                '401':
+                    description: Access token is
+    /tweets/{tweet_id}:
+        get:
+            tags:
+                - tweets
+            summary: Get Tweet
+            description: Get Tweet
+            operationId: Get Tweet
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: tweet_id
+                  in: path
+                  description: get tweet by tweet_id
+                  required: true
+                  schema:
+                      type: string
+                      example: 6603ee1fc27d06f01329b9a1
+            responses:
+                '200':
+                    description: Uploads success
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        description: Get Tweet Successfully
+                                    result:
+                                        $ref: '#/components/schemas/Tweet'
+                            example:
+                                message: Get Tweet Successfully
+                                result:
+                                    _id: '6603e295b201bb6aaa08ec2d'
+                                    user_id: '65e88407e5f0b97e785a9779'
+                                    type: 2
+                                    audience: 0
+                                    content: ''
+                                    parent_id: '65d8c82055921fdd10246508'
+                                    hashtags:
+                                        - '65dae679030a74767aebbee3'
+                                    mentions: []
+                                    medias: []
+                                    guest_views: 0
+                                    user_views: 0
+                                    created_at: '2024-03-27T09:10:45.212Z'
+                                    updated_at: '2024-03-27T09:10:45.212Z'
+
+                '401':
+                    description: Access token is required
+
+    /tweets/{tweet_id}/children:
+        get:
+            tags:
+                - tweets
+            summary: Get Comment
+            description: Get Comment
+            operationId: Get Comment
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: tweet_id
+                  in: path
+                  description: get comment by tweet_id
+                  required: true
+                  schema:
+                      type: string
+                      example: 6603ee1fc27d06f01329b9a1
+                - name: limit
+                  in: query
+                  required: true
+                  description: Số lượng tweet mỗi trang
+                  schema:
+                      type: string
+                      default: 1
+                - name: page
+                  in: query
+                  required: true
+                  description: Trang đang lấy
+                  schema:
+                      type: string
+                      example: 1
+                - name: tweet_type
+                  in: query
+                  required: true
+                  description: Loại tweet cần lấy
+                  schema:
+                      type: string
+                      example: 2
+            responses:
+                '200':
+                    description: Danh sách được trả về thành công
+
+                '401':
+                    description: Access token is required
+                '403':
+                    description: Tweet is not public
+
+    /bookmarks:
+        post:
+            tags:
+                - bookmarks
+            summary: Bookmarks
+            description: Bookmarks
+            operationId: Bookmarks
+            security:
+                - BearerAuth: []
+            requestBody:
+                description: Bookmarks request
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/TweetParam'
+                required: true
+            responses:
+                '200':
+                    description: Bookmark successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        description: Bookmark successfully
+                                    result:
+                                        $ref: '#/components/schemas/BookmarkAndLike'
+                '400':
+                    description: Invalid tweet id
+                '401':
+                    description: Access token is required
+                '404':
+                    description: Tweet not found
+    /bookmarks/tweets/{tweet_id}:
+        delete:
+            tags:
+                - bookmarks
+            summary: Unbookmarks
+            description: Unbookmarks
+            operationId: Unbookmarks
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: tweet_id
+                  in: path
+                  description: Unbookmarks by tweet_id
+                  required: true
+                  schema:
+                      type: string
+                      example: 65d701872e9ffc88bd43fe02
+            responses:
+                '200':
+                    description: Unbookmark successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: Unbookmark successfully
+                '400':
+                    description: Invalid tweet id
+                '401':
+                    description: Access token is required
+                '404':
+                    description: Tweet not found
+
+    /likes:
+        post:
+            tags:
+                - likes
+            summary: Likes Tweet
+            description: Likes Tweet
+            operationId: Likes Tweet
+            security:
+                - BearerAuth: []
+            requestBody:
+                description: Likes Tweet request
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/TweetParam'
+                required: true
+            responses:
+                '200':
+                    description: Like successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        description: Like successfully
+                                    result:
+                                        $ref: '#/components/schemas/BookmarkAndLike'
+                '400':
+                    description: Invalid tweet id
+                '401':
+                    description: Access token is required
+                '404':
+                    description: Tweet not found
+
+    /likes/tweets/{tweet_id}:
+        delete:
+            tags:
+                - likes
+            summary: Like Tweet
+            description: Like Tweet
+            operationId: Like Tweet
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: tweet_id
+                  in: path
+                  description: Likes Tweet by tweet_id
+                  required: true
+                  schema:
+                      type: string
+                      example: 65d701872e9ffc88bd43fe02
+            responses:
+                '200':
+                    description: Likes successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: Unlikes successfully
+                '400':
+                    description: Invalid tweet id
+                '401':
+                    description: Access token is required
+                '404':
+                    description: Tweet not found
+
+    /search:
+        get:
+            tags:
+                - search
+            summary: Search Advanced
+            description: Search Advanced
+            operationId: Search Advanced
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: content
+                  in: query
+                  description: Nội dung cần tìm kiếm
+                  required: false
+                  example: hello
+                  schema:
+                      type: string
+                - name: limit
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      default: 10
+                - name: page
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      default: 1
+                - name: page
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      default: 1
+                - name: people_follow
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      default: 0
+                - name: media_type
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+
+            responses:
+                '200':
+                    description: Danh sách kết quả tìm kiếm được trả về thành công
+                '401':
+                    description: Access token is required
