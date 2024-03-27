@@ -1,6 +1,6 @@
-import { config } from 'dotenv'
 import { createHash } from 'node:crypto'
-config()
+import { envConfig } from '~/constants/config'
+
 /**
  * Returns a SHA256 hash using SHA-2 for the given `content`.
  *
@@ -16,5 +16,5 @@ export function sha256(content: string) {
 }
 
 export function hashPassword(password: string) {
-    return sha256(password + process.env.PASSWORD_SECRET)
+    return sha256(password + envConfig.passwordSecret)
 }

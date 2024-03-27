@@ -17,6 +17,7 @@ import conversationsRouter from './routes/conversations.routes'
 import initSocket from './utils/socket'
 import swaggerJsDoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
+import { envConfig } from './constants/config'
 // import '~/utils/fake'
 config()
 
@@ -41,7 +42,7 @@ databaseService.connect().then(() => {
 })
 const app = express()
 const httpServer = createServer(app)
-const port = process.env.PORT || 4000
+const port = envConfig.port
 
 initFolder()
 
